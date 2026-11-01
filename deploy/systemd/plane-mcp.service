@@ -1,0 +1,30 @@
+# Install:
+#   sudo cp deploy/systemd/plane-mcp.service /etc/systemd/system/
+#   sudo systemctl edit plane-mcp        # override User= and paths if needed
+#   sudo systemctl daemon-reload && sudo systemctl enable --now plane-mcp
+#   journalctl -u plane-mcp -f
+
+[Unit]
+Description=Plane MCP server (HTTP)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=plane-mcp
+Group=plane-mcp
+WorkingDirectory=/opt/cloudshift-plane-mcp
+EnvironmentFile=/opt/cloudshift-plane-mcp/.env
+ExecStart=/opt/cloudshift-plane-mcp/.venv/bin/plane-mcp-server http
+Restart=on-failure
+RestartSec=5
+
+# Hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/cloudshift-plane-mcp
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,36 @@
+# Secrets and local runtime files
+.env
+.env.*
+!.env.example
+logs/
+*.log
+.plane-mcp.pid
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Not needed in the image
+.git/
+.github/
+docs/
+tests/
+deploy/
+scripts/
+*.md
+!README.md
+
+# Editors
+.vscode/
+.idea/
+.cursor/
+.DS_Store

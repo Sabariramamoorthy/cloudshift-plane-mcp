@@ -1,0 +1,33 @@
+# Usage (from the repository root):
+#   cp .env.example .env    # fill in PLANE_* values
+#   docker compose -f deploy/docker-compose.yml up -d --build
+#
+# The server listens on 127.0.0.1:8211; put a TLS reverse proxy in front
+# (see deploy/caddy/Caddyfile.example) before exposing it.
+
+services:
+  plane-mcp:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    image: cloudshift-plane-mcp:latest
+    restart: unless-stopped
+    env_file:
+      - ../.env
+    environment:
+      MCP_HOST: 0.0.0.0
+      MCP_PORT: "8211"
+    ports:
+      - "127.0.0.1:8211:8211"
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+
+  # Optional: only needed for OAuth mode (PLANE_MCP_DISABLE_OAUTH=false).
+  # Uncomment and set REDIS_HOST=redis in .env.
+  # redis:
+  #   image: redis:7-alpine
+  #   restart: unless-stopped
+  #   command: ["redis-server", "--save", "", "--appendonly", "no"]

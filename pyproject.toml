@@ -1,0 +1,76 @@
+[project]
+name = "cloudshift-plane-mcp"
+version = "0.1.0"
+description = "Plane MCP server with self-hosted Community Edition support, API-key HTTP auth, and deterministic team reports"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "CloudShift Solutions"},
+    {name = "Surya Prashanth", email = "surya.prashanth@plane.so"},
+    {name = "Plane Engineering", email = "support@plane.so"},
+]
+keywords = ["mcp", "plane", "plane-ce", "self-hosted", "fastmcp", "ai", "automation", "reporting"]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Bug Tracking",
+]
+
+dependencies = [
+    "fastmcp==3.2.0",
+    "plane-sdk==0.2.20",
+    "py-key-value-aio[redis]>=0.4.4,<0.5.0",
+    "mcp==1.26.0",
+    "PyJWT>=2.12.0",
+    "authlib>=1.6.9",
+    "boto3>=1.34.0",
+    # pydocket 0.16.6 (pinned by fastmcp 2.14.4) imports `FakeConnection` from
+    # `fakeredis.aioredis`, which was removed in fakeredis 2.35.0.
+    "fakeredis[lua]>=2.32.1,<2.35.0",
+    "tzdata>=2024.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "ruff>=0.1.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Sabariramamoorthy/cloudshift-plane-mcp"
+Issues = "https://github.com/Sabariramamoorthy/cloudshift-plane-mcp/issues"
+Upstream = "https://github.com/makeplane/plane-mcp-server"
+
+[project.scripts]
+plane-mcp-server = "plane_mcp.__main__:main"
+cloudshift-plane-mcp = "plane_mcp.__main__:main"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["plane_mcp*", "cloudshift*"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]

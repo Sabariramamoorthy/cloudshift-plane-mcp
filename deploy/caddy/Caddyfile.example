@@ -1,0 +1,19 @@
+# TLS reverse proxy in front of the MCP server (Caddy obtains certificates automatically).
+# Run the server with MCP_HOST=127.0.0.1 so port 8211 is not reachable directly.
+
+mcp.example.com {
+	encode gzip
+
+	# Optional: restrict who can reach the server at all. Strongly recommended
+	# if PLANE_MCP_ALLOW_URL_ONLY_AUTH=true.
+	# @blocked not remote_ip 203.0.113.0/24 198.51.100.7
+	# respond @blocked 403
+
+	reverse_proxy 127.0.0.1:8211 {
+		# MCP streamable HTTP responses can be long-lived event streams.
+		flush_interval -1
+		transport http {
+			read_timeout 5m
+		}
+	}
+}

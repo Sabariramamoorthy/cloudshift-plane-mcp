@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/Sabariramamoorthy/cloudshift-plane-mcp/security/advisories/new
+    about: Please report security issues privately.
+  - name: Issue in Plane itself or the upstream MCP server
+    url: https://github.com/makeplane/plane-mcp-server/issues
+    about: Problems not specific to this fork are best reported upstream.
